@@ -1,9 +1,6 @@
 ---
 title: "My First Post"
 date: 2019-02-09
-draft: true
-series: ["Golang Web Development"]
-tags: ["go", "golang"]
 ---
 
 
