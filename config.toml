@@ -1,7 +1,28 @@
 baseURL = "https://master.d1pxjj95w4qhah.amplifyapp.com/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "Jonathan Whitaker"
 theme = "hyde"
+
+pygmentsUseClasses=true
+pygmentsCodeFences=true
+
+disqusShortname = "jon-whit"
+
+summaryLength = 70
+
+[menu]
+  [[menu.main]]
+    identifier = "blog"
+    name = "Blog"
+    title = "Blog Section"
+    url = "/blog/"
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    title = "About Page"
+    url = "/about"
 
 [params]
   themeColor = "theme-base-0d"
+  author = "Jonathan Whitaker"
+  description = "Write a nice site description."
