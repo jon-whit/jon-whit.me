@@ -20,7 +20,7 @@ summaryLength = 70
     identifier = "about"
     name = "About"
     title = "About Page"
-    url = "/about"
+    url = "/about/"
 
 [params]
   themeColor = "theme-base-0d"
