@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>   
+    {{ partial "header/font-awesome.html" . }}
+    {{ .Hugo.Generator }}
+
+    <!-- Enable responsiveness on mobile devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {{ if .IsHome -}}
+    <title>{{ .Site.Title }}</title>
+    {{- else -}}
+    <title>{{ .Title }} &middot; {{ .Site.Title }}</title>
+    {{- end }}
+
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="{{ .Site.BaseURL }}css/print.css" media="print">
+    <link type="text/css" rel="stylesheet" href="{{ .Site.BaseURL }}css/poole.css">
+    <link type="text/css" rel="stylesheet" href="{{ .Site.BaseURL }}css/syntax.css">
+    <link type="text/css" rel="stylesheet" href="{{ .Site.BaseURL }}css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+</head>

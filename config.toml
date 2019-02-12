@@ -10,6 +10,19 @@ disqusShortname = "jon-whit"
 
 summaryLength = 70
 
+# Site Settings
+[params]
+  themeColor = "theme-base-0d"
+  author = "Jonathan Whitaker"
+  description = "Write a nice site description."
+
+# Social Accounts
+[params.social]
+  github = "jon-whit"
+  stackoverflow = "3342427/jonathan"
+  email = "jon.b.whitaker@gmail.com"
+
+# Main Menu
 [menu]
   [[menu.main]]
     identifier = "blog"
@@ -21,8 +34,3 @@ summaryLength = 70
     name = "About"
     title = "About Page"
     url = "/about/"
-
-[params]
-  themeColor = "theme-base-0d"
-  author = "Jonathan Whitaker"
-  description = "Write a nice site description."

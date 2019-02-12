@@ -1,3 +1,7 @@
+{{ define "header" }}
+  {{ partial "header.html" . }}
+{{ end }}
+
 {{ define "main" -}}
 <div class="posts">
 {{ $paginator := .Paginate (where .Data.Pages "Type" "blog") }}
@@ -9,7 +13,7 @@
   {{ if not (.Date.IsZero) }}
   <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z0700" }}" class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</time>
   {{ end }}
-  {{ .Summary }}
+  {{ .Summary | markdownify }}
   {{ if .Truncated }}
   <div class="read-more-link">
     <a href="{{ .RelPermalink }}">Read More…</a>
