@@ -1,4 +1,4 @@
-baseURL = "https://master.d1pxjj95w4qhah.amplifyapp.com/"
+baseURL = "https://jon-whit.me/"
 languageCode = "en-us"
 title = "Jonathan Whitaker"
 theme = "hyde"
@@ -8,7 +8,7 @@ pygmentsCodeFences=true
 
 disqusShortname = "jon-whit"
 
-summaryLength = 72
+summaryLength = 70
 
 # Site Settings
 [params]
