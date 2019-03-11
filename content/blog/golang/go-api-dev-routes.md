@@ -6,6 +6,8 @@ categories: ["golang", "web", "api"]
 ## Overview
 This is the first article in a series of articles on developing a web API using [Golang](https://golang.org/). In this series I will walk you through developing a simple REST API in Go using the Service Pattern with complete examples of Dependency Injection, Mocking, and a simple Redis Caching layer. We'll be using [sqlite](https://www.sqlite.org/index.html) as our database backend.
 
+<!--more-->
+
 In this article I am going to give an overview of the project layout and also demonstrate how to setup the API routes and HTTP handlers for the API.
 
 ### Contacts API
