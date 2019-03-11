@@ -14,7 +14,7 @@ summaryLength = 70
 [params]
   themeColor = "theme-base-0d"
   author = "Jonathan Whitaker"
-  description = "Write a nice site description."
+  description = "Technology and Adventures"
 
 # Social Accounts
 [params.social]

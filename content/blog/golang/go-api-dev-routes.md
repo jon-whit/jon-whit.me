@@ -195,8 +195,8 @@ package models
 ...
 
 type User struct {
-    ID       string    `jsonapi:"primary,users"`
-    Contacts []Contact `jsonapi:"relation,contacts"`
+    ID       string    `json:"id"`
+    Contacts []Contact `json:"contacts"`
 }
 ```
 
@@ -206,12 +206,12 @@ package models
 ...
 
 type Contact struct {
-    ID           string `jsonapi:"primary,contacts"`
-    FirstName    string `jsonapi:"attr,firstName"`
-    LastName     string `jsonapi:"attr,lastName"`
-    Phone        string `jsonapi:"attr,phone"`
-    Email        string `jsonapi:"attr,email,omitempty"`
-    Address      string `jsonapi:"attr,address,omitempty"`
+    ID           string `json:"id"`
+    FirstName    string `json:"firstName"`
+    LastName     string `json:"lastName"`
+    Phone        string `json:"phone"`
+    Email        string `json:"email,omitempty"`
+    Address      string `json:"address,omitempty"`
 }
 ```
 
