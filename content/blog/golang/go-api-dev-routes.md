@@ -8,6 +8,8 @@ This is the first article in a series of articles on developing a web API using 
 
 <!--more-->
 
+If you wish to skip the articles and prefer to just read the code, you can find the [`go-contacts`](https://github.com/jon-whit/go-contacts) project on GitHub.
+
 In this article I am going to give an overview of the project layout and also demonstrate how to setup the API routes and HTTP handlers for the API.
 
 ### Contacts API
@@ -51,8 +53,9 @@ package main
 ...
 
 func main() {
-    http.ListenAndServe(":8080", ChiRouter().InitRouter())
+	http.ListenAndServe(":8080", NewChiRouter().InitRouter())
 }
+
 ```
 
 `router.go` -  Binds the controller's handlers to the appropriate route to handle the HTTP request. In this example we're using the [Chi](https://github.com/go-chi/chi) router, which is a "lightweight, idiomatic and composable router for building Go HTTP services." I like using Chi because it's 100% compliant with the standard Go [net/http](https://golang.org/pkg/net/http/) library, which would allow me to swap it out for another net/http compliant library if I so choose.
@@ -61,48 +64,49 @@ package main
 ...
 
 type ChiRouter interface {
-    InitRouter() *chi.Mux
+	InitRouter() *chi.Mux
 }
 
 type router struct{}
 
 func (router *router) InitRouter() *chi.Mux {
 
-    // Create the SQLite DB Handler
-    // Covered in the next article in this series.
-    var sqliteHandler interfaces.DBHandler
+	// Create the SQLite DB Handler
+	// Covered in the next article in this series.
+	var sqliteHandler interfaces.DBHandler
 
-    // Inject all implementations of the interfaces.
-    controller := controllers.ContactsController{
-        &services.ContactsService{
-            DataAccessor: &datastores.ContactsDatastore{
-                sqliteHandler,
-            },
-        },
-    }
+	// Inject all implementations of the interfaces.
+	controller := controllers.ContactsController{
+		&services.ContactsService{
+			DataAccessor: &datastores.ContactsDatastore{
+				sqliteHandler,
+			},
+		},
+	}
 
-    // Define and bind the API routes for the Contacts API
-    r := chi.NewRouter()
-    r.Get("/users/{userid}/contacts", controller.ListUserContacts)
-    r.Post("/users/{userid}/contacts", controller.CreateContact)
+	// Define and bind the API routes for the Contacts API
+	r := chi.NewRouter()
+	r.Get("/users/{userid}/contacts", controller.ListUserContacts)
+	r.Post("/users/{userid}/contacts", controller.CreateContact)
 
-    return r
+	return r
 }
 
 var (
-    m          *router
-    routerOnce sync.Once
+	m          *router
+	routerOnce sync.Once
 )
 
-// ChiRouter defines a Singleton, ensuring only a single ChiRouter is created
-func ChiRouter() ChiRouter {
-    if m == nil {
-        routerOnce.Do(func() {
-            m = &router{}
-        })
-    }
-    return m
+// NewChiRouter defines a Singleton, ensuring only a single ChiRouter is created
+func NewChiRouter() ChiRouter {
+	if m == nil {
+		routerOnce.Do(func() {
+			m = &router{}
+		})
+	}
+	return m
 }
+
 ```
 
 ## Controllers
@@ -116,36 +120,38 @@ package controllers
 ...
 
 type ContactsController struct {
-    interfaces.ContactsManager
+	ContactManager interfaces.ContactsManager
 }
 
 func (controller *ContactsController) ListUserContacts(w http.ResponseWriter, req *http.Request) {
 
-    userID := chi.URLParam(req, "userid")
+	userID := chi.URLParam(req, "userid")
 
-    contacts, err := controller.ListUserContacts(userID)
-    if err != nil {
-        // Handle error
-    }
+	contacts, err := controller.ContactManager.ListUserContacts(userID)
+	if err != nil {
+		// Handle error
+	}
 
-    json.NewEncoder(w).Encode(contacts)
+	json.NewEncoder(w).Encode(contacts)
+	return
 }
 
 func (controller *ContactsController) CreateContact(w http.ResponseWriter, req *http.Request) {
 
-    contact := &models.Contact{}
+	userID := chi.URLParam(req, "userid")
+	contact := models.Contact{}
 
-    // See go-chi/render package
-    if err := render.Bind(r, contact); err != nil {
-        // Handle error
-    }
+	// See go-chi/render package
+	if err := render.Bind(req, &contact); err != nil {
+		// Handle error
+	}
 
-    createdContact, err := controller.CreateContact(userID, contact)
-    if err != nil {
-        // Handle error
-    }
+	createdContact, err := controller.ContactManager.CreateContact(userID, contact)
+	if err != nil {
+		// Handle error
+	}
 
-    json.NewEncoder(w).Encode(createdContact)
+	json.NewEncoder(w).Encode(createdContact)
 }
 ```
 
@@ -156,9 +162,10 @@ package interfaces
 ...
 
 type ContactsManager interface {
-    ListUserContacts(userID string) ([]models.Contact, error)
-    CreateContact(userID, contact models.Contact) (models.Contact, error)
+	ListUserContacts(userID string) ([]models.Contact, error)
+	CreateContact(userID string, contact models.Contact) (models.Contact, error)
 }
+
 ```
 
 `interfaces/ContactsDataAccessor.go` - Defines the data access layer interface to manage the persistence of Contact information. The `ContactsService` struct embeds this interface to interact with the data access layer.
@@ -167,8 +174,8 @@ package interfaces
 ...
 
 type ContactsDataAccessor interface {
-    ListUserContacts(userID string) ([]models.Contact, error)
-    CreateUserContact(userID string, contact models.Contact) (models.Contact, error)
+	ListUserContacts(userID string) ([]models.Contact, error)
+	CreateUserContact(userID string, contact models.Contact) (models.Contact, error)
 }
 ```
 
@@ -194,11 +201,10 @@ The models folder houses the structs under the `models` namespace. Each model de
 `models/users.go` - Defines the model for a User in the API.
 ```go
 package models
-...
 
 type User struct {
-    ID       string    `json:"id"`
-    Contacts []Contact `json:"contacts"`
+	ID       string    `json:"id"`
+	Contacts []Contact `json:"contacts"`
 }
 ```
 
@@ -208,12 +214,18 @@ package models
 ...
 
 type Contact struct {
-    ID           string `json:"id"`
-    FirstName    string `json:"firstName"`
-    LastName     string `json:"lastName"`
-    Phone        string `json:"phone"`
-    Email        string `json:"email,omitempty"`
-    Address      string `json:"address,omitempty"`
+	ID        string `json:"id"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Phone     string `json:"phone"`
+	Email     string `json:"email,omitempty"`
+	Address   string `json:"address,omitempty"`
+}
+
+// Bind on Contact will run after the unmarshalling is complete, its
+// a good time to focus some post-processing after a decoding.
+func (c *Contact) Bind(r *http.Request) error {
+	return nil
 }
 ```
 
@@ -226,16 +238,17 @@ package services
 ...
 
 type ContactsService struct {
-    DataAccessor interfaces.ContactsDataAccessor
+	DataAccessor interfaces.ContactsDataAccessor
 }
 
 func (service *ContactsService) ListUserContacts(userID string) ([]models.Contact, error) {
-    return service.DataAccessor.ListUserContacts(userID string)
+	return service.DataAccessor.ListUserContacts(userID)
 }
 
 func (service *ContactsService) CreateContact(userID string, contact models.Contact) (models.Contact, error) {
-    return service.DataAccessor.CreateContact(userID, contact)
+	return service.DataAccessor.CreateUserContact(userID, contact)
 }
+
 ```
 
 ## Datastores
@@ -247,15 +260,15 @@ package datastores
 ...
 
 type ContactsDatastore struct {
-    interfaces.DbHandler
+	interfaces.DbHandler
 }
 
 func (ds *ContactsDatastore) ListUserContacts(userID string) ([]models.Contact, error) {
-    ... // Covered in the next article in this series.
+	... // Covered in the next article in this series.
 }
 
 func (ds *ContactsDatastore) CreateUserContact(userID string, contact models.Contact) (models.Contact, error) {
-    ... // Covered in the next article in this series.
+	... // Covered in the next article in this series.
 }
 ```
 
