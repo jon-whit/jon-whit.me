@@ -219,7 +219,6 @@ type Contact struct {
 	LastName  string `json:"lastName"`
 	Phone     string `json:"phone"`
 	Email     string `json:"email,omitempty"`
-	Address   string `json:"address,omitempty"`
 }
 
 // Bind on Contact will run after the unmarshalling is complete, its
@@ -275,4 +274,4 @@ func (ds *ContactsDatastore) CreateUserContact(userID string, contact models.Con
 ----
 
 ## Summary
-At this point you should have some Go code that defines a pretty good skeleton of the Contacts API. We have created a main application entry point that binds various API routes to HTTP handlers defined by a controller, and we have wired up the controller with the interfaces it needs to do it's job. We have also implemented a service struct that implements the `ContactsManager` interface, so we're one step closer to having a working application. In ["Go API Development: Part 2"](../go-api-development/part-2) we will implement the `ContactsDataAccessor` interface so that we can start to actually persist the Contacts that we manage.
+At this point you should have some Go code that defines a pretty good skeleton of the Contacts API. We have created a main application entry point that binds various API routes to HTTP handlers defined by a controller, and we have wired up the controller with the interfaces it needs to do it's job. We have also implemented a service struct that implements the `ContactsManager` interface, so we're one step closer to having a working application. In ["Go API Development: Part 2"](../go-api-dev-database-layer) we will implement the `ContactsDataAccessor` interface so that we can start to actually persist the Contacts that we manage.
