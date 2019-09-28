@@ -5,6 +5,7 @@ theme = "hyde"
 
 pygmentsUseClasses=true
 pygmentsCodeFences=true
+enableEmoji=true
 
 disqusShortname = "jon-whit"
 

@@ -171,6 +171,6 @@ func (router *router) InitRouter() *chi.Mux {
 ## Summary
 Now that we have implemented the database layer and wired it up with the `ContactService` implementation, we should have a fully functional Contacts API. We should be able to list a user's Contacts and create a Contact, and these changes are now persisted using a sqlite database. The only thing remaining is testing..
 
-In ["Go API Development: Part 3"](../go-api-dev-testing.md) I'll demonstrate how we can leverage [golang/gomock](https://github.com/golang/mock) to generate mock implementations of the various interfaces we've authored up to this point. We'll use these interface mocks to inject dependencies for testing.
+In ["Go API Development: Part 3"](../go-api-dev-testing/) I'll demonstrate how we can leverage [golang/gomock](https://github.com/golang/mock) to generate mock implementations of the various interfaces we've authored up to this point. We'll use these interface mocks to inject dependencies for testing.
 
 Don't be afraid to [check out the code](https://github.com/jon-whit/go-contacts) and review what we've done so far.
