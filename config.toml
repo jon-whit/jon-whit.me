@@ -15,7 +15,7 @@ summaryLength = 70
 [params]
   themeColor = "theme-base-0d"
   author = "Jonathan Whitaker"
-  description = "Technology and Adventures"
+  description = "An engineer's journal"
 
 # Social Accounts
 [params.social]
