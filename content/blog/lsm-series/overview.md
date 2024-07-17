@@ -114,6 +114,7 @@ B Tree is generally better for read performance as compared to an LSM Tree, but 
 ### B+ Tree
 
 ### LSM Tree
+
 Writes to an LSM Tree involve an immediate append to a memtable, which is an in-memory append-only log of writes that are pending a flush to the downstream SST persistence layer. Since mutations are just an immediate append to an in-memory structure, writes to an LSM are generally more efficient than B Tree variants, and with more clever caching and disk avoidance tactics the read performance of LSM Trees can generally be just as good as B Tree variants.
 
 (todo: add a diagram here)
@@ -126,13 +127,12 @@ DGraph BadgerDB design https://dgraph.io/docs/badger/design/
 See https://www.usenix.org/system/files/conference/fast16/fast16-papers-lu.pdf for more research on this.
 
 ## Summary
-
-In the articles that follow, we'll explore the design and implementation details of the various components of an LSM tree. If you'd like to jump ahead to a specific article, please feel free, but otherwise we'll be covering each article in succession because they build on one another:
+Throughout the remainder of this "Building a Key/Value Database" series we'll focus on the design and implementation of an LSM tree implementation specifically. If you'd like to jump ahead to a specific article, please feel free, but otherwise we'll be covering each article in succession because they largely build on one another:
 
 * LSM (Part 1): Skiplists and Memtables
 * LSM (Part 2): Sorted String Tables (SSTs), Merge Mechanics, and Bloom Filters
 * LSM (Part 3): Log Compaction, Persistence, and the Commit Log (WAL)
-* LSM (Part 4): MVCC, Isolation Levels, and Snapshots
+* LSM (Part 4): Isolation Levels, MVCC, and Snapshots
 
 
 #### Things to Research Prior to Posting
